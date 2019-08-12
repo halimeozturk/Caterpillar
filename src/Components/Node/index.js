@@ -73,19 +73,19 @@ class Root extends React.PureComponent {
       })
     }
   }
+ 
 
   removeNode = (data,id) => {
     var flag = false;
-    console.log(id)
-    if(data.nodeId == id) {
-      flag = true;
-      data.children.pop()
-    }
+    
     if(flag == false) {
       data.children.forEach(e => {
         if(id == e.nodeId) {
           flag = true;
-            data.children.pop(null)
+          const index = data.children.findIndex(a => a.nodeId === id);
+          console.log(index)
+          if (index === -1) return;
+          data.children.splice(index, 1);
         }
       })
     }
@@ -96,7 +96,6 @@ class Root extends React.PureComponent {
     }
   }
 
-
 render(){
     return(
       <div style={containerStyles}>
@@ -106,7 +105,7 @@ render(){
         <input onChange={this.handleContent}/>
         <button onClick={() => {
           var data = clone(this.state.data)
-          this.addNode(data,this.state.DataId,{nodeId:this.generateId(), name : this.state.title , content : this.state.content, children : []})
+          this.addNode(data,this.state.DataId,{nodeId:this.generateId(),parentId:this.state.DataId,name : this.state.title , content : this.state.content, children : []})
           this.setState({
             data : data
           })
