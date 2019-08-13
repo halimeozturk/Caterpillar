@@ -1,7 +1,7 @@
 import React from 'react';
 import Tree from 'react-d3-tree';
 import clone from "clone";
- 
+
 const TreeData = {
   nodeId: 1,
   name : "root",
@@ -13,18 +13,19 @@ const TreeData = {
 const svgSquare = {
   shape: 'rect',
   shapeProps: {
-    width: 20,
-    height: 20,
-    x: -10,
-    y: -10,
-  }
+    width: 120,
+    height: 40,
+    x: -60,
+    y: 0,
+  } 
 }
 
 const containerStyles = {
   width: "100%",
   height: "100vh"
 };
- 
+
+
 class Root extends React.PureComponent {
   constructor(){
     super()
@@ -73,11 +74,9 @@ class Root extends React.PureComponent {
       })
     }
   }
- 
 
   removeNode = (data,id) => {
     var flag = false;
-    
     if(flag == false) {
       data.children.forEach(e => {
         if(id == e.nodeId) {
@@ -100,9 +99,9 @@ render(){
     return(
       <div style={containerStyles}>
       {this.state.DataId ?
-      <div>
+      <div  >
         <input onChange={this.handleTitle}/>
-        <input onChange={this.handleContent}/>
+        <input onChange={this.handleContent} className="box"/>
         <button onClick={() => {
           var data = clone(this.state.data)
           this.addNode(data,this.state.DataId,{nodeId:this.generateId(),parentId:this.state.DataId,name : this.state.title , content : this.state.content, children : []})
@@ -119,22 +118,21 @@ render(){
         }} > Remove </button>
       </div> : null
        }
-
         <Tree
             data = {this.state.data}
-            nodeSvidgShape={svgSquare}
+            nodeSvgShape={svgSquare}
             translidate={this.state.translate}
-            orientidation={"vertical"}
+            orientation={"vertical"}
             onClick={(e) => {
               this.setState({
                 DataId : e.nodeId
               })
             }} 
             onChange = {this.generateId}
-            
+            height={400}
+            width={400}  
         />
-        
-      </div>
+        </div>
       
     )
 }
