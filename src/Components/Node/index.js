@@ -1,7 +1,8 @@
 import React from 'react';
 import Tree from 'react-d3-tree';
 import clone from "clone";
-
+import "./index.css"
+ 
 const TreeData = {
   nodeId: 1,
   name : "root",
@@ -10,23 +11,26 @@ const TreeData = {
   ]
 };
 
-const svgSquare = {
-  shape: 'rect',
-  shapeProps: {
-    width: 120,
-    height: 40,
-    x: -60,
-    y: 0,
-  } 
-}
-
 const containerStyles = {
   width: "100%",
-  height: "100vh"
+  height: "2000vh",
+  backgroundColor:"#f7eeee",
 };
 
+const Card = ({ nodeData }) => (
+  <div>
+    <div className="node-container">
+        <h5 style={{ margin: "5px" ,textAlign: "center", fontSize:30}} className="card-title">
+          {nodeData.name}
+        </h5>
+        <p style={{ margin: "5px" , fontSize:25 }} className="card-text">
+          {nodeData.content}
+        </p>
+    </div>
+  </div>
+);
 
-class Root extends React.PureComponent {
+class Node extends React.PureComponent {
   constructor(){
     super()
   this.state = {
@@ -37,21 +41,21 @@ class Root extends React.PureComponent {
   };
 }
 
-    handleTitle = (e) => {
-      this.setState({title : e.target.value})
-    }
+  handleTitle = (e) => {
+    this.setState({title : e.target.value})
+  }
 
-    handleContent = (e) => {
-      this.setState({content : e.target.value})
-    }
-  
-    generateId = () => {
-      let letter = ["a", "b", "c", "d", "e", "f", "g","x","p","k","u","h","n","l","z","g"];
-      let rand1 =Math.floor(Math.random()*10000);
-      let rand2 =Math.floor(Math.random()*16);
-      let rand3 =Math.floor(Math.random()*16);
-      let rand4 =Math.floor(Math.random()*10000);
-      return letter[rand3] + (rand1) + letter[rand2] + (rand4);
+  handleContent = (e) => {
+    this.setState({content : e.target.value})
+  }
+
+  generateId = () => {
+    let letter = ["a", "b", "c", "d", "e", "f", "g","x","p","k","u","h","n","l","z","g"];
+    let rand1 =Math.floor(Math.random()*10000);
+    let rand2 =Math.floor(Math.random()*16);
+    let rand3 =Math.floor(Math.random()*16);
+    let rand4 =Math.floor(Math.random()*10000);
+    return letter[rand3] + (rand1) + letter[rand2] + (rand4);
   }
 
   addNode = (data,id,newNode) => {
@@ -97,19 +101,30 @@ class Root extends React.PureComponent {
 
 render(){
     return(
-      <div style={containerStyles}>
+      <div style={containerStyles}  ref={tc => (this.treeContainer = tc)}>
+
       {this.state.DataId ?
-      <div  >
-        <input onChange={this.handleTitle}/>
-        <input onChange={this.handleContent} className="box"/>
-        <button onClick={() => {
+      <div className="div-container ">
+          <form action= "" className="main-form" >
+
+            <div class="form-group">
+              <input className ="form-control" style={{margin: "5px" , fontSize:30, height:50}} onChange={this.handleTitle} placeholder="Title" />
+            </div>
+
+            <div class="form-group">
+              <input className ="form-control" style={{ margin: "5px" , fontSize:25, height:150}} onChange={this.handleContent} placeholder="Content"/>
+            </div>
+          </form>
+
+        <button  class="btn btn-dark" style={{ margin: "5px" , fontSize:25}} onClick={() => {
           var data = clone(this.state.data)
           this.addNode(data,this.state.DataId,{nodeId:this.generateId(),parentId:this.state.DataId,name : this.state.title , content : this.state.content, children : []})
           this.setState({
             data : data
           })
-        }} > Save </button>
-         <button onClick={() => {
+        }}> Save </button>
+        
+         <button  class="btn btn-dark"  style={{ margin: "5px" , fontSize:25}} onClick={() => {
           var data = clone(this.state.data)
           this.removeNode(data,this.state.DataId)
           this.setState({
@@ -118,10 +133,9 @@ render(){
         }} > Remove </button>
       </div> : null
        }
+
         <Tree
             data = {this.state.data}
-            nodeSvgShape={svgSquare}
-            translidate={this.state.translate}
             orientation={"vertical"}
             onClick={(e) => {
               this.setState({
@@ -129,13 +143,31 @@ render(){
               })
             }} 
             onChange = {this.generateId}
-            height={400}
-            width={400}  
+            translate={this.state.translate}
+            zoomable={true}
+            scaleExtent={{ min: 1, max: 3 }}
+            allowForeignObjects
+            nodeSvgShape={{ shape: "none" }}
+            translate={{ x: 200, y: 200 }}
+            nodeSize={{ x: 300, y: 300 }}
+             nodeLabelComponent={{
+            render: <Card />,
+            foreignObjectWrapper: {
+              style: {
+                x: -90,
+                y: -100,
+                
+              }
+            }
+          }}
+            
         />
+
+       
         </div>
       
     )
 }
 }
 
-export default Root;
+export default Node;

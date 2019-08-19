@@ -1,5 +1,5 @@
 import React from 'react';
-import Root from '../Node';
+import Node from '../Node';
 
 
 class App extends React.PureComponent {
@@ -8,7 +8,7 @@ class App extends React.PureComponent {
   render() {
     return (
       <div >
-      <Root/>
+      <Node/>
       </div>
       
     );
