@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "font-picker-react": "^3.3.0",
     "react": "^16.8.6",
     "react-d3-tree": "^1.13.0",
     "react-dom": "^16.8.6",

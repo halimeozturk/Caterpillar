@@ -2,6 +2,7 @@ import React from 'react';
 import Tree from 'react-d3-tree';
 import clone from "clone";
 import "./index.css"
+import FontPicker from "font-picker-react";
  
 const TreeData = {
   nodeId: 1,
@@ -18,12 +19,12 @@ const containerStyles = {
 };
 
 const Card = ({ nodeData }) => (
-  <div>
+  <div  className="apply-font">
     <div className="node-container">
-        <h5 style={{ margin: "5px" ,textAlign: "center", fontSize:30}} className="card-title">
+        <h5 style={{textAlign: "center", fontSize:30,overflow:"hidden"}} className="card-title">
           {nodeData.name}
         </h5>
-        <p style={{ margin: "5px" , fontSize:25 }} className="card-text">
+        <p style={{fontSize:25 ,overflow:"hidden"}} className="card-text">
           {nodeData.content}
         </p>
     </div>
@@ -37,7 +38,8 @@ class Node extends React.PureComponent {
     data : TreeData,
     DataId : "",
     title : "",
-    content : ""
+    content : "",
+    activeFontFamily: "Open Sans",
   };
 }
 
@@ -108,12 +110,22 @@ render(){
           <form action= "" className="main-form" >
 
             <div class="form-group">
-              <input className ="form-control" style={{margin: "5px" , fontSize:30, height:50}} onChange={this.handleTitle} placeholder="Title" />
+              <input className ="form-control" style={{margin: "auto" , width: "420px",fontSize:30, height:50,overflow:"hidden",border: "2px solid#452121",borderRadius: "7px"}} onChange={this.handleTitle} placeholder="Title" />
             </div>
 
             <div class="form-group">
-              <input className ="form-control" style={{ margin: "5px" , fontSize:25, height:150}} onChange={this.handleContent} placeholder="Content"/>
+              <input className ="form-control" style={{ margin: "auto" ,width: "420px", fontSize:25, height:130,border: "2px solid#452121",borderRadius: "7px"}} onChange={this.handleContent} placeholder="Content"/>
             </div>
+            
+            <FontPicker
+                apiKey="AIzaSyAU_jLt3CC5xoK2VZ0W295IMfiVDaMzn8Y"
+                activeFontFamily={this.state.activeFontFamily}
+                onChange={nextFont =>
+                this.setState({
+                    activeFontFamily: nextFont.family,
+            })
+          }
+        />
           </form>
 
         <button  class="btn btn-dark" style={{ margin: "5px" , fontSize:25}} onClick={() => {
@@ -144,11 +156,11 @@ render(){
             }} 
             onChange = {this.generateId}
             translate={this.state.translate}
-            zoomable={true}
+            // zoomable={true}
             scaleExtent={{ min: 1, max: 3 }}
             allowForeignObjects
             nodeSvgShape={{ shape: "none" }}
-            translate={{ x: 200, y: 200 }}
+            translate={{ x: 700, y: 450 }}
             nodeSize={{ x: 300, y: 300 }}
              nodeLabelComponent={{
             render: <Card />,

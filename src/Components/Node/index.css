@@ -3,9 +3,9 @@
     background-color: black;
     width: 250px;
     height: 100px;
-    overflow: hidden;
     text-align:"center";
     color: white;
+
 }
 
 .main-container {
@@ -13,6 +13,7 @@
     height: "100vh";
     background-color: black;
     display: block;
+    
 }
 
 .div-container {
@@ -33,7 +34,7 @@
   padding: 8px;
   box-sizing: border-box;
   transition: 0.3s;
-  display: block;
+  display: block;    
 }
 
 .rd3t-tree-container svg {
@@ -41,4 +42,34 @@
   left: 0px;
   top: 0px;
   z-index: 98;
+}
+
+div #font-picker .dropdown-button {
+  position: relative;
+  width: 420px;
+  height: 40px;
+  margin:auto;
+  padding: 8px;
+  border-radius: 7px;
+  background:white;
+  outline: none;
+  border: 2px solid#452121;
+  
+
+  
+}
+
+div #font-picker ul {
+  position: relative;
+  width: 400px;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: #eddede;
+    box-shadow: 1px 1px 3px rgb(228, 206, 206,0.2);
+}
+
+div #font-picker ul li button.active-font {
+  background: #e4cece
 }
