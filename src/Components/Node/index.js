@@ -3,7 +3,8 @@ import Tree from 'react-d3-tree';
 import clone from "clone";
 import "./index.css"
 import FontPicker from "font-picker-react";
- 
+import { BasicPicker } from 'react-color-tools';
+
 const TreeData = {
   nodeId: 1,
   name : "root",
@@ -18,19 +19,6 @@ const containerStyles = {
   backgroundColor:"#f7eeee",
 };
 
-const Card = ({ nodeData }) => (
-  <div  className="apply-font">
-    <div className="node-container">
-        <h5 style={{textAlign: "center", fontSize:30,overflow:"hidden"}} className="card-title">
-          {nodeData.name}
-        </h5>
-        <p style={{fontSize:25 ,overflow:"hidden"}} className="card-text">
-          {nodeData.content}
-        </p>
-    </div>
-  </div>
-);
-
 class Node extends React.PureComponent {
   constructor(){
     super()
@@ -40,8 +28,23 @@ class Node extends React.PureComponent {
     title : "",
     content : "",
     activeFontFamily: "Open Sans",
+    color: 'white',
+    backgroundColor:'black'
   };
 }
+
+  card = ({ nodeData }) => (
+    <div  className="apply-font">
+      <div className="node-container" style={{backgroundColor:this.state.backgroundColor}}>
+          <h5 style={{textAlign: "center", fontSize:30,overflow:"hidden",color:this.state.color}} className="card-title">
+            {nodeData.name}
+          </h5>
+          <p style={{fontSize:25 ,overflow:"hidden",color:this.state.color}} className="card-text">
+            {nodeData.content}
+          </p>
+      </div>
+    </div>
+  );
 
   handleTitle = (e) => {
     this.setState({title : e.target.value})
@@ -126,8 +129,19 @@ render(){
             })
           }
         />
-          </form>
 
+            <h5 style={{color:"#783a3a"}}>Change Text Color</h5>
+            <BasicPicker
+              color={this.state.color}
+              onChange={color => this.setState({ color })}
+            />
+          <h5 style={{color:"#783a3a"}}>Change Box Color</h5>
+            <BasicPicker
+              backgroundColor={this.state.backgroundColor}
+              onChange={backgroundColor => this.setState({ backgroundColor })}
+            />
+      </form>
+      
         <button  class="btn btn-dark" style={{ margin: "5px" , fontSize:25}} onClick={() => {
           var data = clone(this.state.data)
           this.addNode(data,this.state.DataId,{nodeId:this.generateId(),parentId:this.state.DataId,name : this.state.title , content : this.state.content, children : []})
@@ -163,7 +177,7 @@ render(){
             translate={{ x: 700, y: 450 }}
             nodeSize={{ x: 300, y: 300 }}
              nodeLabelComponent={{
-            render: <Card />,
+            render: <this.card />,
             foreignObjectWrapper: {
               style: {
                 x: -90,

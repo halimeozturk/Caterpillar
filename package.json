@@ -5,6 +5,8 @@
   "dependencies": {
     "font-picker-react": "^3.3.0",
     "react": "^16.8.6",
+    "react-color": "^2.17.3",
+    "react-color-tools": "^1.0.0",
     "react-d3-tree": "^1.13.0",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1"
