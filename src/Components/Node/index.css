@@ -1,13 +1,53 @@
 .node-container{
     border-radius: 8px;
-    background-color: black;
+    background-color: #452121;
     width: 250px;
     height: 100px;
     text-align:"center";
     color: white;
+    font-family: Open Sans;
+    overflow: auto
+}
+
+.node-container-2{
+  border-radius: 3px;
+  width: 250px;
+  height: 100px;
+  text-align:"center";
+  backgroundColor:"#452121";
+  font-family: Open Sans;
+  color:white;
+  overflow: auto
+}
+
+.square{
+  position: relative;
+  top: -60px;
+  left: 20px;
+  padding: 60px;
+  width:200px;
+  height:200px;
+  color:white;
+  backgroundColor:"#452121";
+}
+
+.oval {
+  width:250px;
+  height:100px;
+  backgroundColor:"#452121";
+  border-radius:50%;
+  color:white;
 
 }
 
+.circule { 
+border-radius: 165px;
+width:250px;
+height:250px;
+line-height:250px;
+font-size:20px;
+color:white; 
+}
 .main-container {
     width: "100%";
     height: "100vh";
@@ -18,7 +58,6 @@
 
 .div-container {
   margin:auto;
-  overflow: hidden;
   float: right;
   display: block;
   position: relative;

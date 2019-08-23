@@ -5,9 +5,12 @@ import "./index.css"
 import FontPicker from "font-picker-react";
 import { BasicPicker } from 'react-color-tools';
 
+
 const TreeData = {
   nodeId: 1,
   name : "root",
+  backgroundColor:"#452121",
+  css: "node-container",
   children: [
    
   ]
@@ -19,32 +22,38 @@ const containerStyles = {
   backgroundColor:"#f7eeee",
 };
 
+const Card = ({ nodeData }) => (
+  <div className={nodeData.css} style={{backgroundColor:nodeData.backgroundColor,css :nodeData.css}} s >
+    <div  className="apply-font">
+        <h5  style={{textAlign: "center", fontSize:30,color:nodeData.color}} className="card-title">
+          {nodeData.name}
+        </h5>
+        <p  style={{fontSize:25 ,color:nodeData.color}} className="card-text">
+          {nodeData.content}
+        </p>
+    </div>
+  </div>
+);
+
 class Node extends React.PureComponent {
   constructor(){
     super()
-  this.state = {
-    data : TreeData,
-    DataId : "",
-    title : "",
-    content : "",
-    activeFontFamily: "Open Sans",
-    color: 'white',
-    backgroundColor:'black'
-  };
+    this.state = {
+      data : TreeData,
+      DataId : "",
+      title : "",
+      content : "",
+      activeFontFamily: "Open Sans",
+      color: "white",
+      backgroundColor : "#452121",
+      css: "node-container",
+      triangle : "triangle",
+      square : "square",
+      oval : "oval",
+      circule : "circule",
+      
+    };
 }
-
-  card = ({ nodeData }) => (
-    <div  className="apply-font">
-      <div className="node-container" style={{backgroundColor:this.state.backgroundColor}}>
-          <h5 style={{textAlign: "center", fontSize:30,overflow:"hidden",color:this.state.color}} className="card-title">
-            {nodeData.name}
-          </h5>
-          <p style={{fontSize:25 ,overflow:"hidden",color:this.state.color}} className="card-text">
-            {nodeData.content}
-          </p>
-      </div>
-    </div>
-  );
 
   handleTitle = (e) => {
     this.setState({title : e.target.value})
@@ -91,7 +100,6 @@ class Node extends React.PureComponent {
         if(id == e.nodeId) {
           flag = true;
           const index = data.children.findIndex(a => a.nodeId === id);
-          console.log(index)
           if (index === -1) return;
           data.children.splice(index, 1);
         }
@@ -104,10 +112,88 @@ class Node extends React.PureComponent {
     }
   }
 
+  onChangeBackgrounColor = (data,id,backgroundColor) => {
+    var flag = false;
+    if(data.nodeId == id) {
+      flag = true;
+      data.backgroundColor = backgroundColor
+    }
+
+    if(flag == false) {
+      data.children.forEach(e => {
+        if(id == e.nodeId) {
+          flag = true;
+          data.children.forEach((element,) => {
+            if(element.nodeId ===  id) {
+              element.backgroundColor = backgroundColor
+            }
+        });
+        }
+      })
+    }
+    if(flag == false) {
+      data.children.forEach(e => {
+        this.onChangeBackgrounColor(e,id,backgroundColor);
+      })
+    }
+  }
+
+  onChangeColor = (data,id,color) => {
+    var flag = false;
+    if(data.nodeId == id) {
+      flag = true;
+      data.color = color
+    }
+    if(flag == false) {
+      data.children.forEach(e => {
+        if(id == e.nodeId) {
+          flag = true;
+          data.children.forEach((element) => {
+            if(element.nodeId ===  id) {
+              element.color = color
+            }
+        });
+        }
+      })
+    }
+    if(flag == false) {
+      data.children.forEach(e => {
+        this.onChangeColor(e,id,color);
+      })
+    }
+  }
+
+  onChangeShape = (data,id,shapeId) => {
+    var flag = false;
+    if(data.nodeId == id) {
+      flag = true;
+      data.css =  this.state[shapeId]
+    }
+    console.log(data)
+    if(flag == false) {
+      data.children.forEach(e => {
+        if(id == e.nodeId) {
+          flag = true;
+          data.children.forEach((element) => {
+            if(element.nodeId ===  id) {
+              element.css =  this.state[shapeId]
+          }
+        });
+        }
+      })
+      
+    }
+    
+    if(flag == false) {
+      data.children.forEach(e => {
+        this.onChangeShape(e,id,shapeId);
+      })
+    }
+  }
+
 render(){
     return(
       <div style={containerStyles}  ref={tc => (this.treeContainer = tc)}>
-
       {this.state.DataId ?
       <div className="div-container ">
           <form action= "" className="main-form" >
@@ -118,6 +204,22 @@ render(){
 
             <div class="form-group">
               <input className ="form-control" style={{ margin: "auto" ,width: "420px", fontSize:25, height:130,border: "2px solid#452121",borderRadius: "7px"}} onChange={this.handleContent} placeholder="Content"/>
+            </div>
+
+            <div>
+            <select style={{ margin: "auto" ,width: "420px", fontSize:25, height:40,border: "2px solid#452121",borderRadius: "7px"}} 
+            onChange={(event) => {
+              var data = clone(this.state.data)
+              this.onChangeShape(data,this.state.DataId,event.target.value)
+              this.setState({
+                data : data
+              })
+            }}> 
+                <option value="square">square</option>
+                <option value="oval">oval</option>
+                <option value="circule">circule</option>
+                <option value="css">Rectangle</option>
+            </select>
             </div>
             
             <FontPicker
@@ -130,21 +232,34 @@ render(){
           }
         />
 
-            <h5 style={{color:"#783a3a"}}>Change Text Color</h5>
+          <h5 style={{color:"#783a3a"}}>Change Text Color</h5>
             <BasicPicker
-              color={this.state.color}
-              onChange={color => this.setState({ color })}
+              onChange={color => {
+                var data = clone(this.state.data)
+                this.onChangeColor(data,this.state.DataId,color)
+                this.setState({
+                  data : data
+                })
+              }}
             />
           <h5 style={{color:"#783a3a"}}>Change Box Color</h5>
             <BasicPicker
-              backgroundColor={this.state.backgroundColor}
-              onChange={backgroundColor => this.setState({ backgroundColor })}
+             onChange={backgroundColor => {
+              var data = clone(this.state.data)
+              this.onChangeBackgrounColor(data,this.state.DataId,backgroundColor)
+              this.setState({
+                data : data
+              })
+            }
+            }
             />
       </form>
-      
+
+        
+
         <button  class="btn btn-dark" style={{ margin: "5px" , fontSize:25}} onClick={() => {
           var data = clone(this.state.data)
-          this.addNode(data,this.state.DataId,{nodeId:this.generateId(),parentId:this.state.DataId,name : this.state.title , content : this.state.content, children : []})
+          this.addNode(data,this.state.DataId,{nodeId:this.generateId(),backgroundColor:this.state.backgroundColor, name : this.state.title , content : this.state.content, children : [], css: "node-container"})
           this.setState({
             data : data
           })
@@ -163,9 +278,10 @@ render(){
         <Tree
             data = {this.state.data}
             orientation={"vertical"}
-            onClick={(e) => {
+            collapsible={false}
+            onClick={(e) => {   
               this.setState({
-                DataId : e.nodeId
+                DataId : e.nodeId,
               })
             }} 
             onChange = {this.generateId}
@@ -177,19 +293,16 @@ render(){
             translate={{ x: 700, y: 450 }}
             nodeSize={{ x: 300, y: 300 }}
              nodeLabelComponent={{
-            render: <this.card />,
+            render: <Card/>,
             foreignObjectWrapper: {
               style: {
-                x: -90,
-                y: -100,
-                
+                x: -125,
+                y: 0,
               }
             }
           }}
             
         />
-
-       
         </div>
       
     )
