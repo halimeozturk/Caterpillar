@@ -1,4 +1,8 @@
-<h1>Building the Caterpillar</h1>
+<h1>Caterpillar</h1>
+Mind Map
+<img src="mindmap.png" alt="mindmap" style="max-width:100%;"/>
+
+<h2>Building the Caterpillar</h2>
 
 <h3>Grab latest sources:</h3>
 

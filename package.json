@@ -4,9 +4,11 @@
   "private": true,
   "dependencies": {
     "font-picker-react": "^3.3.0",
-    "react": "^16.8.6",
+    "react": "^16.9.0",
     "react-color-tools": "^1.0.0",
     "react-d3-tree": "^1.13.0",
+    "react-dom": "^16.9.0",
+    "react-draggable": "^3.3.2",
     "react-scripts": "3.0.1"
   },
   "scripts": {
